@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const express = require('express');
 const router = express.Router();
 // Person Model 
@@ -45,6 +46,48 @@ router.post('/', async (req, res) => {
 		const result = await person.save();
 		
 		res.send(result);
+	} catch(error) {
+		res.status(500).json({
+			message: "Internal server error",
+			error: error.toString(),
+		})
+	}
+});
+
+router.put('/:id', async (req, res) => {
+	if (!req.params.id) {
+		return res.sendStatus(500);
+	}
+	const id = req.params.id;
+
+	const person = await Person.findOne({_id: new mongoose.Types.ObjectId(id)});
+
+	if (!person) {
+		return res.status(404).send({message: 'Person not found'});
+	} else {
+		person.firstName = req.body.firstName;
+		person.lastName = req.body.lastName;
+		person.age = parseInt(req.body.age);
+
+		await person.save();
+
+		return res.send(person);
+	}
+});
+
+router.delete('/:id', async (req, res) => {
+	try {
+		const person = await Person.deleteOne({_id: req.params.id});
+
+		console.log(person);
+
+		if (person) {
+			return res.json(person);
+		}
+
+		res.status(404).json({
+			message: "Person not found",
+		})
 	} catch(error) {
 		res.status(500).json({
 			message: "Internal server error",

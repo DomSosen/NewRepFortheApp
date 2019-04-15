@@ -37,9 +37,8 @@ class App extends Component {
           </nav>
 
           	<Route path='/' exact component={UserList} />
-		        <Route path='/edit'  component={EditUser} />
-		        <Route path='/create'  component={CreateUser} />
-	      
+		        <Route path='/edit/:id' component={EditUser} />
+		        <Route path='/create' component={CreateUser} />
 	        </div>
      		</Router>
     );

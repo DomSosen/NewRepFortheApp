@@ -1,20 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-
-
-const User = props => (
-	<tr>
-		<td> { props.user.firstName } </td>
-		<td> { props.user.lastName } </td>
-		<td> { props.user.age } </td>
-
-		<td>
-			<Link to={"/edit/"+props.user._id}>Edit</Link>
-		</td>
-	</tr>
-	)
-
+import Button from "reactstrap/es/Button";
 
 export default class UserList extends Component {
 
@@ -31,10 +18,9 @@ export default class UserList extends Component {
 	    axios.get('http://localhost:7778/person/' )
 	    .then(res => {
 	    	this.setState({ users:  res.data.list });
-	    })
-			.catch(function (error) {
-				console.log(error.toString());
-			})
+	    }).catch(function (error) {
+			console.log(error.toString());
+		});
 
 
 		// .then( response => {
@@ -42,13 +28,37 @@ export default class UserList extends Component {
 		// 	console.log(response.data);
 		// })
     }
-   
+
+	deleteUser = (id) => () => {
+		axios.delete(`http://localhost:7778/person/${id}`)
+			.then(res => {
+				this.setState({ users: this.state.users.filter(x => x._id !== id) });
+			}).catch(function (error) {
+				console.log(error.toString());
+			});
+	};
+
+	renderUsersRow(user) {
+		return (
+			<tr>
+				<td> { user.firstName } </td>
+				<td> { user.lastName } </td>
+				<td> { user.age } </td>
+
+				<td>
+					<Link to={"/edit/"+user._id}><Button>Edit</Button></Link>
+					<Button onClick={this.deleteUser(user._id)}>Delete</Button>
+				</td>
+			</tr>
+		);
+	}
+
  	userList() {
  		return this.state.users.map((currentUser, i) => {
- 			return <User user={currentUser} key={i} />;
+ 			return this.renderUsersRow(currentUser);
  		})
  	}
-
+ 	
     render() {
      	return(
 	      	<div>
@@ -59,6 +69,7 @@ export default class UserList extends Component {
 	      				<th>First Name </th>
 	      				<th>Last Name</th>
 	      				<th>Age</th>
+						<th>&nbsp;</th>
 	      			</tr>
 	      		</thead>
 	      			<tbody>

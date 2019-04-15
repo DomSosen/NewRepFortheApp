@@ -52,7 +52,7 @@ export default class CreateUser extends Component {
 			lastName: this.state.lastName,
 			age: this.state.age,
 
-		}
+		};
 
 		axios.post('http://localhost:7778/person/', newUser)
 			.then(function (response) {
@@ -61,10 +61,6 @@ export default class CreateUser extends Component {
 			.catch(function (error) {
 				console.log(error);
 			});
-
-
-
-
 
 		this.setState({
 			firstName: '',

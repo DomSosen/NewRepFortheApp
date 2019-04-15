@@ -8,10 +8,6 @@ Collapse,
   Nav,
   NavItem,
   NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem, 
   Container
 
 } from 'reactstrap';
@@ -34,7 +30,7 @@ class AppNavbar extends Component {
 		<div>
 			<Navbar color="dark" dark expand="sm" className="mb-5"> 
 				<Container>
-					<NavbarBrand href="/"> DOMS MERN APP </NavbarBrand>
+					<NavbarBrand href="/"> DOMS MERN APP e Luigi </NavbarBrand>
 					<NavbarToggler onClick={this.toggle} />
 					<Collapse isOpen={this.state.isOpen} navbar>
 						<Nav className="ml-auto" navbar>
